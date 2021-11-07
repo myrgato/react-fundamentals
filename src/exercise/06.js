@@ -26,18 +26,7 @@ function UsernameForm({onSubmitUsername}) {
 
   const inputRef = React.useRef(null)
 
-  const [error, setError] = React.useState(null)
-
-  const handleChange = event => {
-    const {value} = event.target
-    if (!value) {
-      setError(null)
-      return
-    }
-    const isValid = isLowerCase(value)
-    console.log('handleChange', { value, isValid })
-    setError(isValid ? null : 'Username must be lower case')
-  }
+  const [username, setUsername] = React.useState('')
 
   const handleSubmit = event => {
     event.preventDefault()
@@ -53,11 +42,17 @@ function UsernameForm({onSubmitUsername}) {
           ref={inputRef}
           id="usernameInput"
           type="text"
-          onChange={handleChange}
+          value={username}
+          onChange={event => {
+            const {value} = event.target
+            const lowercaseValue = value?.toLowerCase()
+            setUsername(lowercaseValue)
+          }}
         />
-        <span style={{ marginLeft: 4 }} role="alert">{error}</span>
       </div>
-      <button type="submit" disabled={error}>Submit</button>
+      <button type="submit" disabled={!username}>
+        Submit
+      </button>
     </form>
   )
 }
